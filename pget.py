@@ -2,7 +2,7 @@
 
 # A widget app written in Python to download resources from Internet
 # Author: Feifei Hang
-# Last Update: Tue 28-05-2013 08:44 pm
+# Last Update: Wed 29-05-2013 05:54 pm
 
 import urllib2
 import urlparse
@@ -61,9 +61,9 @@ else:
 
     for index in range(2, len(sys.argv)):
         ls = sys.argv[index]
+        print 'Try to download from list: ', ls
         protocol = getHttpProtocol(ls)
         if protocol.upper() in PROTOCOLS:
-            print 'Try to download from list: ', ls
             try:
                 lf = urllib2.urlopen(urllib2.Request(ls, headers=hdr))
                 downloadFromJSON(lf)
