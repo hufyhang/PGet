@@ -63,6 +63,7 @@ else:
         ls = sys.argv[index]
         protocol = getHttpProtocol(ls)
         if protocol.upper() in PROTOCOLS:
+            print 'Try to download from list: ', ls
             try:
                 lf = urllib2.urlopen(urllib2.Request(ls, headers=hdr))
                 downloadFromJSON(lf)
