@@ -7,10 +7,19 @@ import urllib2
 import urlparse
 import sys
 import json
+import os
 
-LAST_MODIFICATION = 'Fri 31-05-2013 06:50 pm'
+LAST_MODIFICATION = 'Fri 31-05-2013 06:53 pm'
 UPDATE_JSON = 'http://feifeihang.info/app/pget/update.json'
 CHUNK_SIZE = 8192
+
+PGET_PATH = os.path.abspath(os.path.dirname(__file__)) + '/'
+
+USAGE = '''Usage: python pget.py [option] [List 1] [List 2] ... [List N]
+    -l: Download from JSON list.
+    -u: Update PGet.
+    -v: Show the latest modification of PGet.
+'''
 
 PROTOCOLS = ['HTTP', 'HTTPS', 'FTP']
 
@@ -64,28 +73,21 @@ def downloadFile(url, filename=None):
     except:
         print 'Oops! Cannot download ', url
 
-def downloadFromJSON(lf):
+def downloadFromJSON(ls, destDir=''):
+    lf = urllib2.urlopen(urllib2.Request(ls, headers=hdr))
     jsonData = json.load(lf)
     for item in jsonData:
         filename = item
         url = jsonData[item]
-        downloadFile(url, filename)
+        downloadFile(url, destDir + filename)
     
 if len(sys.argv) == 1:
-    print '''Usage: python pget.py [option] [List 1] [List 2] ... [List N]
-        -l: Download from JSON list.
-        -u: Update PGet.
-        -v: Show the latest modification of PGet.
-    '''
+    print USAGE
     sys.exit(0)
 
 if sys.argv[1] == '-l':
     if len(sys.argv) == 2:
-        print '''Usage: python pget.py [option] [List 1] [List 2] ... [List N]
-            -l: Download from JSON list.
-            -u: Update PGet.
-            -v: Show the latest modification of PGet.
-        '''
+        print USAGE
         sys.exit(0)
 
     for index in range(2, len(sys.argv)):
@@ -94,8 +96,7 @@ if sys.argv[1] == '-l':
         protocol = getHttpProtocol(ls)
         if protocol.upper() in PROTOCOLS:
             try:
-                lf = urllib2.urlopen(urllib2.Request(ls, headers=hdr))
-                downloadFromJSON(lf)
+                downloadFromJSON(ls)
             except:
                 print 'Oops! JSON error in ', ls
         else:
@@ -107,7 +108,8 @@ if sys.argv[1] == '-l':
                 print 'Oops! Cannot open ', ls
 
 elif sys.argv[1] == '-u':
-    downloadFile(UPDATE_JSON)
+    print 'Updating sequence started...'
+    downloadFromJSON(UPDATE_JSON, PGET_PATH)
 elif sys.argv[1] == '-v':
     print 'PGet Last Modified: ', LAST_MODIFICATION
 else:
