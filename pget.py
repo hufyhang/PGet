@@ -2,7 +2,7 @@
 
 # A widget app written in Python to download resources from Internet
 # Author: Feifei Hang
-# Last Update: Fri 31-05-2013 03:56 pm
+# Last Update: Fri 31-05-2013 04:18 pm
 
 import urllib2
 import urlparse
@@ -41,7 +41,19 @@ def downloadFile(url, filename=None):
             readLength = len(buffer)
             percent = float(readLength) / totalLength
             percent = round(percent * 100, 2)
-            sys.stdout.write("Downloaded %d of %d bytes (%0.2f%%) \r" %(readLength, totalLength, percent))
+            barsNumber = percent // 10
+            barsNumber = int(barsNumber)
+            bars = '|'
+            if barsNumber != 10:
+                for index in range(0, barsNumber - 1):
+                    bars += '='
+                bars += '>'
+                for index in range(barsNumber, 10):
+                    bars += ' '
+                bars += '|'
+            else:
+                bars = '|==========|'
+            sys.stdout.write("Downloaded %d of %d bytes (%0.2f%%) %s \r" %(readLength, totalLength, percent, bars))
             if percent == 100:
                 break
 
