@@ -9,7 +9,7 @@ import sys
 import json
 import os
 
-LAST_MODIFICATION = 'Fri 31-05-2013 06:53 pm'
+LAST_MODIFICATION = 'Fri 31-05-2013 09:33 pm'
 UPDATE_JSON = 'http://feifeihang.info/app/pget/update.json'
 CHUNK_SIZE = 8192
 
@@ -73,8 +73,7 @@ def downloadFile(url, filename=None):
     except:
         print 'Oops! Cannot download ', url
 
-def downloadFromJSON(ls, destDir=''):
-    lf = urllib2.urlopen(urllib2.Request(ls, headers=hdr))
+def downloadFromJSON(lf, destDir=''):
     jsonData = json.load(lf)
     for item in jsonData:
         filename = item
@@ -96,7 +95,8 @@ if sys.argv[1] == '-l':
         protocol = getHttpProtocol(ls)
         if protocol.upper() in PROTOCOLS:
             try:
-                downloadFromJSON(ls)
+                lf = urllib2.urlopen(urllib2.Request(ls, headers=hdr))
+                downloadFromJSON(lf)
             except:
                 print 'Oops! JSON error in ', ls
         else:
@@ -109,7 +109,8 @@ if sys.argv[1] == '-l':
 
 elif sys.argv[1] == '-u':
     print 'Updating sequence started...'
-    downloadFromJSON(UPDATE_JSON, PGET_PATH)
+    lf = urllib2.urlopen(urllib2.Request(UPDATE_JSON, headers=hdr))
+    downloadFromJSON(lf, PGET_PATH)
 elif sys.argv[1] == '-v':
     print 'PGet Last Modified: ', LAST_MODIFICATION
 else:
