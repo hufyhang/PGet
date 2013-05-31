@@ -33,7 +33,7 @@ def downloadFile(url, filename=None):
         totalLength = int(u.info().getheader('Content-Length').strip())
         if filename == None:
             filename = getFileName(url)
-        print 'Downloading : ' + filename + '. Please wait...'
+        print 'Downloading : ' + filename
         localfile = open(filename, 'w')
         buffer = ''
         while 1:
