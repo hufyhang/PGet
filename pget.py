@@ -2,13 +2,14 @@
 
 # A widget app written in Python to download resources from Internet
 # Author: Feifei Hang
-# Last Update: Fri 31-05-2013 04:18 pm
 
 import urllib2
 import urlparse
 import sys
 import json
 
+LAST_MODIFICATION = 'Fri 31-05-2013 06:31 pm'
+UPDATE_JSON = 'http://feifeihang.info/app/pget/update.json'
 CHUNK_SIZE = 8192
 
 PROTOCOLS = ['HTTP', 'HTTPS', 'FTP']
@@ -52,7 +53,7 @@ def downloadFile(url, filename=None):
                     bars += ' '
                 bars += '|'
             else:
-                bars = '|==========|'
+                bars = '|===Done===|'
             sys.stdout.write("Downloaded %d of %d bytes (%0.2f%%) %s \r" %(readLength, totalLength, percent, bars))
             if percent == 100:
                 break
@@ -71,17 +72,20 @@ def downloadFromJSON(lf):
         downloadFile(url, filename)
     
 if len(sys.argv) == 1:
-    print 'Usage: python pget.py (-l) [URL 1] [URL 2] ... [URL N]'
-    print '-l -- to download from JSON list'
+    print '''Usage: python pget.py [option] [List 1] [List 2] ... [List N]
+        -l: Download from JSON list.
+        -u: Update PGet.
+        -v: Show the latest modification of PGet.
+    '''
     sys.exit(0)
 
-if sys.argv[1] != '-l':
-    for index in range(1, len(sys.argv)):
-        url = sys.argv[index]
-        downloadFile(url)
-else:
+if sys.argv[1] == '-l':
     if len(sys.argv) == 2:
-        print 'Usage: python pget.py (-l) [List 1] [List 2] ... [List N]'
+        print '''Usage: python pget.py [option] [List 1] [List 2] ... [List N]
+            -l: Download from JSON list.
+            -u: Update PGet.
+            -v: Show the latest modification of PGet.
+        '''
         sys.exit(0)
 
     for index in range(2, len(sys.argv)):
@@ -102,4 +106,11 @@ else:
             except:
                 print 'Oops! Cannot open ', ls
 
-
+elif sys.argv[1] == '-u':
+    downloadFile(UPDATE_JSON)
+elif sys.argv[1] == '-v':
+    print 'PGet Last Modified: ', LAST_MODIFICATION
+else:
+    for index in range(1, len(sys.argv)):
+        url = sys.argv[index]
+        downloadFile(url)
