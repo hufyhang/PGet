@@ -2,12 +2,14 @@
 
 # A widget app written in Python to download resources from Internet
 # Author: Feifei Hang
-# Last Update: Wed 29-05-2013 05:54 pm
+# Last Update: Fri 31-05-2013 03:56 pm
 
 import urllib2
 import urlparse
 import sys
 import json
+
+CHUNK_SIZE = 8192
 
 PROTOCOLS = ['HTTP', 'HTTPS', 'FTP']
 
@@ -28,15 +30,26 @@ def downloadFile(url, filename=None):
     try:
         req = urllib2.Request(url, headers=hdr)
         u = urllib2.urlopen(req)
+        totalLength = int(u.info().getheader('Content-Length').strip())
         if filename == None:
             filename = getFileName(url)
         print 'Downloading : ' + filename + '. Please wait...'
         localfile = open(filename, 'w')
-        localfile.write(u.read())
+        buffer = ''
+        while 1:
+            buffer += u.read(CHUNK_SIZE)
+            readLength = len(buffer)
+            percent = float(readLength) / totalLength
+            percent = round(percent * 100, 2)
+            sys.stdout.write("Downloaded %d of %d bytes (%0.2f%%) \r" %(readLength, totalLength, percent))
+            if percent == 100:
+                break
+
+        localfile.write(buffer)
         localfile.close()
-        print 'Done.'
+        sys.stdout.write('\n')
     except:
-        print 'Oops! Cannot download ',  url
+        print 'Oops! Cannot download ', url
 
 def downloadFromJSON(lf):
     jsonData = json.load(lf)
