@@ -44,6 +44,10 @@ def downloadFile(url, filename=None):
         if filename == None:
             filename = getFileName(url)
         print 'Downloading : ' + filename
+        dirname = os.path.dirname(filename)
+        if dirname != '': #if dirname equals to '', then it is pointing to the current directory.
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
         localfile = open(filename, 'w')
         buffer = ''
         while 1:
