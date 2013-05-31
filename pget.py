@@ -107,7 +107,8 @@ if sys.argv[1] == '-l':
                 print 'Oops! Cannot open ', ls
 
 elif sys.argv[1] == '-u':
-    downloadFile(UPDATE_JSON)
+    print 'Updating sequence stated...'
+    downloadFromJSON(UPDATE_JSON)
 elif sys.argv[1] == '-v':
     print 'PGet Last Modified: ', LAST_MODIFICATION
 else:
