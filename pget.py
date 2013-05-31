@@ -8,7 +8,7 @@ import urlparse
 import sys
 import json
 
-LAST_MODIFICATION = 'Fri 31-05-2013 06:31 pm'
+LAST_MODIFICATION = 'Fri 31-05-2013 06:50 pm'
 UPDATE_JSON = 'http://feifeihang.info/app/pget/update.json'
 CHUNK_SIZE = 8192
 
@@ -107,8 +107,7 @@ if sys.argv[1] == '-l':
                 print 'Oops! Cannot open ', ls
 
 elif sys.argv[1] == '-u':
-    print 'Updating sequence stated...'
-    downloadFromJSON(UPDATE_JSON)
+    downloadFile(UPDATE_JSON)
 elif sys.argv[1] == '-v':
     print 'PGet Last Modified: ', LAST_MODIFICATION
 else:
