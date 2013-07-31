@@ -9,13 +9,13 @@ import sys
 import json
 import os
 
-LAST_MODIFICATION = 'Fri 31-05-2013 09:33 pm'
+LAST_MODIFICATION = 'Fri 31-05-2013 09:47 pm'
 UPDATE_JSON = 'http://feifeihang.info/app/pget/update.json'
 CHUNK_SIZE = 8192
 
 PGET_PATH = os.path.abspath(os.path.dirname(__file__)) + '/'
 
-USAGE = '''Usage: python pget.py [option] [List 1] [List 2] ... [List N]
+USAGE = '''Usage: python pget.py [option] [URL 1] [URL 2] ... [URL N]
     -l: Download from JSON list.
     -u: Update PGet.
     -v: Show the latest modification of PGet.
