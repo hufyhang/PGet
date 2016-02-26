@@ -15,7 +15,7 @@ CHUNK_SIZE = 8192
 
 PGET_PATH = os.path.abspath(os.path.dirname(__file__)) + '/'
 
-USAGE = '''Usage: python pget.py [option] [URL 1] [URL 2] ... [URL N]
+USAGE = '''Usage: python pget.py [option] [List 1] [List 2] ... [List N]
     -l: Download from JSON list.
     -u: Update PGet.
     -v: Show the latest modification of PGet.
